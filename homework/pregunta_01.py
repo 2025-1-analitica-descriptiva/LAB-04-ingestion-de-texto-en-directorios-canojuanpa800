@@ -101,7 +101,7 @@ def pregunta_01():
     """
     # output_folder()
 
-    path= '.\\files\\input'
+    path= './files/input'
     test_dataset= create_dataset(path, 'test')
     train_dataset = create_dataset(path, 'train')
     path_output_folder = output_folder()
