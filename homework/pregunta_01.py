@@ -4,7 +4,35 @@
 """
 Escriba el codigo que ejecute la accion solicitada en cada pregunta.
 """
+import os
+import pandas as pd
+def output_folder():
+    ruta = './files/output'
+    if not os.path.exists(ruta):
+        os.mkdir(ruta)
+    return ruta
+    
+def read_file(file_path):
+    headers = []
+    with open(file_path,"r",encoding="utf-8") as file:
+        headers = file.readlines()
+    return headers
 
+def create_dataset(path, target):
+    columns = ['phrase', 'target']
+    output_df = []
+    for directory in os.listdir(path):
+        if directory == target:
+            path_directory = os.path.join(path, directory)
+            for sentiment in os.listdir(path_directory):
+                path_sentiment = os.path.join(path_directory, sentiment)
+                for files in os.listdir(path_sentiment):
+                    path_file = os.path.join(path_sentiment, files)
+                    content_file = read_file(path_file)
+                    content_file.append(sentiment)
+                    output_df.append(content_file)
+            df = pd.DataFrame(output_df, columns=columns)
+            return df
 
 def pregunta_01():
     """
@@ -71,3 +99,13 @@ def pregunta_01():
 
 
     """
+    # output_folder()
+
+    path= '.\\files\\input'
+    test_dataset= create_dataset(path, 'test')
+    train_dataset = create_dataset(path, 'train')
+    path_output_folder = output_folder()
+    test_dataset.to_csv(os.path.join(path_output_folder, 'test_dataset.csv'))
+    train_dataset.to_csv(os.path.join(path_output_folder, 'train_dataset.csv'))
+
+# pregunta_01()
